@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { CSSProperties, ReactNode } from 'react'
 
 import { Colors } from '../../constants/colors'
 import { FontSizes } from '../../constants/fontSizes'
@@ -8,11 +8,12 @@ type PropsType = {
   color: Colors
   size: FontSizes
   children: ReactNode
+  style?: CSSProperties
 }
 
-export const DefaultText = ({ color, size, children }: PropsType) => {
+export const DefaultText = ({ color, size, children, style }: PropsType) => {
   return (
-    <Wrapper color={color} size={size}>
+    <Wrapper style={style} color={color} size={size}>
       {children}
     </Wrapper>
   )

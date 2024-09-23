@@ -17,6 +17,8 @@ export const Row = styled.div`
   align-items: center;
   background-color: ${Colors.LIGHT};
   border-radius: ${BorderRadius.NORMAL};
+  box-sizing: border-box;
+  border: solid ${Colors.TERTIARY} 1px;
 `
 
 export const RowItem = styled.div`

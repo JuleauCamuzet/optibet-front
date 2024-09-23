@@ -7,4 +7,5 @@ export const Wrapper = styled.span<{ size: FontSizes; color: Colors }>`
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: ${(props) => props.size};
   color: ${(props) => props.color};
+  width: 100%;
 `

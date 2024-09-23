@@ -11,16 +11,17 @@ type PropsType = {
 }
 
 export const TabBody = ({ rows }: PropsType) => {
+  console.log('hey')
   return (
     <Wrapper>
-      {rows &&
+      {rows && rows.length ? (
         rows.map((row) => {
           return (
             <Row key={row.id}>
               {row.values.map((val) => {
                 return (
                   <RowItem key={Math.random()}>
-                    <DefaultText size={FontSizes.SMALL} color={Colors.PRIMARY}>
+                    <DefaultText size={FontSizes.TINY} color={Colors.BLACK}>
                       {val.displayValue}
                     </DefaultText>
                   </RowItem>
@@ -28,7 +29,16 @@ export const TabBody = ({ rows }: PropsType) => {
               })}
             </Row>
           )
-        })}
+        })
+      ) : (
+        <DefaultText
+          style={{ margin: '16px 0 16px 32px' }}
+          color={Colors.PRIMARY}
+          size={FontSizes.BIG}
+        >
+          Aucun résultat
+        </DefaultText>
+      )}
     </Wrapper>
   )
 }

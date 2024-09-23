@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: center;
   background-color: ${Colors.PRIMARY};
-  height: 100%;
+  height: 48px;
   padding: 6px;
 `
 
@@ -25,6 +25,6 @@ export const HeaderItem = styled.div<{ sortable: boolean }>`
 
   &:hover {
     cursor: ${(props) => (props.sortable ? 'pointer' : 'default')};
-    filter: ${(props) => (props.sortable ? 'brightness(.85)' : '')};
+    background-color: ${(props) => (props.sortable ? Colors.PRIMARY_DARK : '')};
   }
 `
