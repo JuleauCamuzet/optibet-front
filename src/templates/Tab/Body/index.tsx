@@ -11,7 +11,6 @@ type PropsType = {
 }
 
 export const TabBody = ({ rows }: PropsType) => {
-  console.log('hey')
   return (
     <Wrapper>
       {rows && rows.length ? (
