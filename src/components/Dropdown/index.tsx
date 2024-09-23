@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import { Body, BodyContainer, Header, HeaderText, Item, Wrapper } from './style'
 import { ChevronDown } from '../icons/Chevron'
+import { Colors } from '../../constants/colors'
 
-type PropsType = {
+export type DropdownPropsType = {
   selectedItemId: string | null
   items: { label: string; id: string }[]
   handleItemClick: (itemId: string) => void
@@ -13,7 +14,7 @@ export const Dropdown = ({
   selectedItemId,
   items,
   handleItemClick,
-}: PropsType) => {
+}: DropdownPropsType) => {
   const [opened, setOpened] = useState(false)
 
   const dropdownRef = useRef<HTMLDivElement | null>(null)
@@ -45,12 +46,14 @@ export const Dropdown = ({
   }
 
   const selectedItem = items.find((item) => item.id === selectedItemId)
-
   return (
     <Wrapper ref={dropdownRef}>
       <Header onClick={handleHeaderClick}>
         <HeaderText>{selectedItem?.label ?? '-----'}</HeaderText>
-        <ChevronDown style={{ transform: `rotate(${opened ? 180 : 0}deg)` }} />
+        <ChevronDown
+          color={Colors.PRIMARY}
+          style={{ transform: `rotate(${opened ? 180 : 0}deg)` }}
+        />
       </Header>
       <BodyContainer>
         <Body visible={opened}>

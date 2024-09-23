@@ -7,4 +7,6 @@ export const Wrapper = styled.div`
   flex-direction: column;
   overflow: hidden;
   border-radius: ${BorderRadius.NORMAL};
+  width: 100%;
+  overflow-x: scroll;
 `
