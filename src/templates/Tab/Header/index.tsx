@@ -7,6 +7,7 @@ import { DefaultText } from '../../../components/DefaultText'
 import { FontSizes } from '../../../constants/fontSizes'
 import { Colors } from '../../../constants/colors'
 import { ChevronDown } from '../../../components/icons/Chevron'
+import { FontWeights } from '../../../constants/fontWeights'
 
 type PropsType = {
   columnsData: TabColumn[]
@@ -39,15 +40,20 @@ export const TabHeader = ({
             sortable={column.sortable}
             key={column.id}
           >
-            <DefaultText size={FontSizes.SMALL} color={Colors.WHITE}>
+            <DefaultText
+              style={{ width: 'fit-content', fontWeight: FontWeights.MEDIUM }}
+              size={FontSizes.SMALL}
+              color={Colors.PRIMARY}
+            >
               {column.label}
             </DefaultText>
             {sortData?.columnId === column.id && (
               <ChevronDown
                 height="18px"
                 style={{
-                  transform: sortData.order === 'ASC' ? 'rotate(180deg)' : '',
+                  transform: sortData.order === 'DESC' ? 'rotate(180deg)' : '',
                 }}
+                color={Colors.PRIMARY}
               />
             )}
           </HeaderItem>

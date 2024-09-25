@@ -1,9 +1,8 @@
 import React from 'react'
 
-import { CalculButtonContainer, Wrapper } from './styles'
+import { Wrapper } from './styles'
 import { TabColumn, TabData, TabRow } from '../../../templates/Tab/types'
 import { Tab } from '../../../templates/Tab'
-import { Button } from '../../../components/Button'
 import { DefaultText } from '../../../components/DefaultText'
 import { FontSizes } from '../../../constants/fontSizes'
 import { Colors } from '../../../constants/colors'
@@ -11,6 +10,10 @@ import { DashboardMove } from '../types'
 import { DropdownPropsType } from '../../../components/Dropdown'
 import { DashboardFilters } from '../Filters'
 import { FontWeights } from '../../../constants/fontWeights'
+import { BoxsGrid } from '../../../templates/BoxsGrid'
+import { BorderRadius } from '../../../constants/borderRadius'
+import { DashboardMoveSquare } from '../MoveSquare'
+import { BoxsGridItemsData } from '../../../templates/BoxsGrid/types'
 
 type PropsType = {
   dashboardMoves: DashboardMove[] | null
@@ -20,6 +23,8 @@ type PropsType = {
   getAndSetDashboardMoves: () => void
   filtersLoading: boolean
   movesLoading: boolean
+  viewType: 'grid' | 'tab'
+  setViewType: (v: 'tab' | 'grid') => void
 }
 
 export const DashboardContent = ({
@@ -30,6 +35,8 @@ export const DashboardContent = ({
   regionFilterData,
   movesLoading,
   filtersLoading,
+  viewType,
+  setViewType,
 }: PropsType) => {
   const tabDataColumns: TabColumn[] = [
     {
@@ -40,33 +47,27 @@ export const DashboardContent = ({
     },
     {
       id: 'league',
-      label: 'Ligue',
+      label: 'League',
       sortable: true,
       valueType: 'string',
     },
     {
       id: 'betA',
-      label: 'Pari A',
+      label: 'Bet A',
       sortable: true,
       valueType: 'string',
     },
     {
       id: 'betB',
-      label: 'Pari B',
+      label: 'Bet B',
       sortable: true,
       valueType: 'string',
     },
     {
       id: 'benefits',
-      label: 'Gains (%)',
+      label: 'Benefits',
       sortable: true,
       valueType: 'number',
-    },
-    {
-      id: 'calculButton',
-      label: '',
-      sortable: false,
-      valueType: 'element',
     },
   ]
 
@@ -92,21 +93,8 @@ export const DashboardContent = ({
               sortValue: moveData.betB.odd,
             },
             {
-              displayValue: `${moveData.benefits}`,
+              displayValue: `${moveData.benefits}%`,
               sortValue: moveData.benefits,
-            },
-            {
-              displayValue: (
-                <CalculButtonContainer>
-                  <Button
-                    size="small"
-                    type="primary"
-                    handleClick={() => alert('clicked')}
-                    label="Calculer"
-                  />
-                </CalculButtonContainer>
-              ),
-              sortValue: '',
             },
           ],
         }
@@ -118,12 +106,107 @@ export const DashboardContent = ({
       ? { columns: tabDataColumns, rows: tabDataRows }
       : null
 
+  const boxsGridData: BoxsGridItemsData | null = dashboardMoves
+    ? {
+        attributes: [
+          {
+            id: 'sport',
+            name: 'Sport',
+            sortable: true,
+            valueType: 'string',
+          },
+          {
+            id: 'league',
+            name: 'League',
+            sortable: true,
+            valueType: 'string',
+          },
+          {
+            id: 'oddA',
+            name: 'Odd A',
+            sortable: true,
+            valueType: 'number',
+          },
+          {
+            id: 'oddB',
+            name: 'Odd B',
+            sortable: true,
+            valueType: 'number',
+          },
+          {
+            id: 'benefits',
+            name: 'Gains (%)',
+            sortable: true,
+            valueType: 'number',
+          },
+          {
+            id: 'region',
+            name: 'Region',
+            sortable: true,
+            valueType: 'string',
+          },
+        ],
+        items: dashboardMoves.map((move) => {
+          return {
+            id: move.id,
+            sortingValues: [
+              {
+                attributeId: 'sport',
+                value: move.sport.name,
+              },
+              {
+                attributeId: 'league',
+                value: move.league.name,
+              },
+              {
+                attributeId: 'oddA',
+                value: move.betA.odd,
+              },
+              {
+                attributeId: 'oddB',
+                value: move.betB.odd,
+              },
+              {
+                attributeId: 'benefits',
+                value: move.benefits,
+              },
+              {
+                attributeId: 'region',
+                value: move.region.name,
+              },
+            ],
+            content: (
+              <DashboardMoveSquare
+                benefits={move.benefits}
+                bookmakerA={move.betA.bookmaker.name}
+                bookmakerB={move.betB.bookmaker.name}
+                league={move.league.name}
+                oddA={move.betA.odd}
+                oddB={move.betB.odd}
+                region={move.region.name}
+                sport={move.sport.name}
+                teamA={move.betA.teamName}
+                teamB={move.betB.teamName}
+              />
+            ),
+          }
+        }),
+      }
+    : null
+
   return (
     <Wrapper>
       <DefaultText
-        style={{ fontWeight: FontWeights.BIG, background: Colors.PRIMARY, padding: '16px 32px', borderRadius: '20px', width: 'fit-content' }}
+        style={{
+          fontWeight: FontWeights.BIG,
+          background: Colors.LIGHT,
+          border: `solid ${Colors.TERTIARY} 1px`,
+          padding: '16px 32px',
+          borderRadius: BorderRadius.NORMAL,
+          width: 'fit-content',
+        }}
         size={FontSizes.HUGE}
-        color={Colors.WHITE}
+        color={Colors.PRIMARY}
       >
         Welcome to Optibets
       </DefaultText>
@@ -131,13 +214,19 @@ export const DashboardContent = ({
         sportFilter={sportFilterData}
         regionFilter={regionFilterData}
         loading={filtersLoading}
+        viewType={viewType}
+        setViewType={setViewType}
       />
-      <Tab
-        tabData={tabData}
-        handleRetry={getAndSetDashboardMoves}
-        error={dashboardMovesError}
-        loading={movesLoading}
-      />
+      {viewType === 'tab' ? (
+        <Tab
+          tabData={tabData}
+          handleRetry={getAndSetDashboardMoves}
+          error={dashboardMovesError}
+          loading={movesLoading}
+        />
+      ) : (
+        <BoxsGrid itemsData={boxsGridData} loading={movesLoading} />
+      )}
     </Wrapper>
   )
 }
