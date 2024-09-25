@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   gap: 6px;
   padding: 6px;
-  border: solid ${Colors.PRIMARY} 1px;
+  border: solid ${Colors.TERTIARY} 1px;
   border-bottom-right-radius: ${BorderRadius.NORMAL};
   border-bottom-left-radius: ${BorderRadius.NORMAL};
 `

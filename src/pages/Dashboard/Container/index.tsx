@@ -22,6 +22,7 @@ export const Dashboard = () => {
   const [sportFilter, setSportFilter] = useState('all')
   const [isFirstRender, setIsFirstRender] = useState(true)
   const [dashboardMovesError, setDashboardMovesError] = useState('')
+  const [viewType, setViewType] = useState<'grid' | 'tab'>('grid')
 
   useEffect(() => {
     getAndSetDashboardMovesData()
@@ -64,7 +65,10 @@ export const Dashboard = () => {
     }
 
     setDashboardMoves(response)
-    setIsFirstRender(false)
+
+    if (isFirstRender) {
+      setIsFirstRender(false)
+    }
   }
 
   const getAndSetSports = async () => {
@@ -108,7 +112,7 @@ export const Dashboard = () => {
         selectedItemId: sportFilter,
         items: [
           {
-            label: 'Tous les sports',
+            label: 'All sports',
             id: 'all',
           },
           ...sports.map((sport) => {
@@ -129,7 +133,7 @@ export const Dashboard = () => {
         selectedItemId: regionFilter,
         items: [
           {
-            label: 'Toutes les régions',
+            label: 'All regions',
             id: 'all',
           },
           ...regions.map((region) => {
@@ -154,6 +158,8 @@ export const Dashboard = () => {
       regionFilterData={dropdownFilterRegionData}
       filtersLoading={filtersLoading}
       movesLoading={movesLoading}
+      viewType={viewType}
+      setViewType={setViewType}
     />
   )
 }
